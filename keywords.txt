@@ -1,0 +1,32 @@
+#######################################
+# Syntax Coloring Map SerialGLCD
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+SerialGLCD	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin	KEYWORD2
+clear	KEYWORD2
+demo	KEYWORD2
+drawAscii KEYWORD2
+drawBox	KEYWORD2
+drawCircle	KEYWORD2
+drawLine	KEYWORD2
+drawPixel	KEYWORD2
+eraseBlock	KEYWORD2
+gotoX	KEYWORD2
+gotoXY	KEYWORD2
+gotoY	KEYWORD2
+setBaudRate	KEYWORD2
+setDutyCycle	KEYWORD2
+toggleReverse	KEYWORD2
+toggleSplashScreen	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
