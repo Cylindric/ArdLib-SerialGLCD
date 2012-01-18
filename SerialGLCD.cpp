@@ -21,7 +21,7 @@ http://github.com/Cylindric/ArdLib-SerialGLCD.
 
 #include "Arduino.h"
 #include "SerialGLCD.h"
-#include <SoftwareSerial.h>
+//#include <SoftwareSerial.h>
 
 // Command-codes for the SparkFun SerialGLCD Backpack
 // http://www.sparkfun.com/products/9352
@@ -50,128 +50,155 @@ static const uint8_t SMALLFONT[] = {
 };
 
 
-SerialGLCD::SerialGLCD(uint8_t transmitPin, uint8_t width, uint8_t height) : _serial(SoftwareSerial(0, transmitPin)) {
+//SerialGLCD::SerialGLCD(uint8_t transmitPin, uint8_t width, uint8_t height) : _serial(SoftwareSerial(0, transmitPin)) {
+SerialGLCD::SerialGLCD(uint8_t transmitPin, uint8_t width, uint8_t height) {
   this->_txPin = transmitPin;
   this->_width = width;
   this->_height = height;
 }
 
 void SerialGLCD::begin() {
-  this->_serial.begin(115200);
+  Serial.begin(115200);
   this->clear();
+  this->flush();
 }
 
 void SerialGLCD::clear() {
-  this->_serial.write(GLCDCMD_COMMAND);
-  this->_serial.write(GLCDCMD_CLEAR); 
+  Serial.write(GLCDCMD_COMMAND);
+  Serial.write(GLCDCMD_CLEAR); 
+  this->flush();
 }
 
 void SerialGLCD::demo() {
-  this->_serial.write(GLCDCMD_COMMAND);
-  this->_serial.write(GLCDCMD_DEMO);
+  Serial.write(GLCDCMD_COMMAND);
+  Serial.write(GLCDCMD_DEMO);
+  this->flush();
 }
 
 void SerialGLCD::toggleReverse() {
-  this->_serial.write(GLCDCMD_COMMAND);
-  this->_serial.write(GLCDCMD_REVERSE);
+  Serial.write(GLCDCMD_COMMAND);
+  Serial.write(GLCDCMD_REVERSE);
+  this->flush();
 }
 
 void SerialGLCD::toggleSplashScreen() {
-  this->_serial.write(GLCDCMD_COMMAND);
-  this->_serial.write(GLCDCMD_SPLASH);
+  Serial.write(GLCDCMD_COMMAND);
+  Serial.write(GLCDCMD_SPLASH);
+  this->flush();
 }
 
 void SerialGLCD::setDutyCycle(uint8_t percent) {
-  this->_serial.write(GLCDCMD_COMMAND);
-  this->_serial.write(GLCDCMD_DUTYCYCLE);
-  this->_serial.write(percent);
+  Serial.write(GLCDCMD_COMMAND);
+  Serial.write(GLCDCMD_DUTYCYCLE);
+  Serial.write(percent);
+  this->flush();
 }
 
 void SerialGLCD::setBaudRate(uint8_t ratecode) {
-  this->_serial.write(GLCDCMD_COMMAND);
-  this->_serial.write(GLCDCMD_BAUD);
-  this->_serial.write(0x30 + ratecode);
+  Serial.write(GLCDCMD_COMMAND);
+  Serial.write(GLCDCMD_BAUD);
+  Serial.write(0x30 + ratecode);
+  this->flush();
 }
 
 void SerialGLCD::gotoX(uint8_t x) {
-  this->_serial.write(GLCDCMD_COMMAND);
-  this->_serial.write(GLCDCMD_SETX);
-  this->_serial.write(x);
+  Serial.write(GLCDCMD_COMMAND);
+  Serial.write(GLCDCMD_SETX);
+  Serial.write(x);
+  this->flush();
 }
 
 void SerialGLCD::gotoY(uint8_t y) {
-  this->_serial.write(GLCDCMD_COMMAND);
-  this->_serial.write(GLCDCMD_SETY);
-  this->_serial.write(y);
+  Serial.write(GLCDCMD_COMMAND);
+  Serial.write(GLCDCMD_SETY);
+  Serial.write(y);
+  this->flush();
 }
 
 void SerialGLCD::gotoXY(uint8_t x, uint8_t y) {
   this->gotoX(x);
   this->gotoY(y);
+  this->flush();
+}
+
+void SerialGLCD::setOrigin(uint8_t x, uint8_t y) {
+  this->_originX = x;
+  this->_originY = y;
+  this->flush();
 }
 
 void SerialGLCD::drawAscii(char* text) {
-  this->_serial.write(text);
+  Serial.write(text);
+  this->flush();
 }
 
 void SerialGLCD::drawPixel(uint8_t x, uint8_t y, bool state) {
-  this->_serial.write(GLCDCMD_COMMAND);
-  this->_serial.write(GLCDCMD_PIXEL);
-  this->_serial.write(x);
-  this->_serial.write(y);
+  Serial.write(GLCDCMD_COMMAND);
+  Serial.write(GLCDCMD_PIXEL);
+  Serial.write(this->_originX + x);
+  Serial.write(this->_originY + y);
   if (state) {
-    this->_serial.write(GLCDCMD_PX_ON);
+    Serial.write(GLCDCMD_PX_ON);
   } else {
-    this->_serial.write(GLCDCMD_PX_OFF);
+    Serial.write(GLCDCMD_PX_OFF);
   }
+  this->flush();
 }
 
 void SerialGLCD::drawLine(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, bool state) {
-  this->_serial.write(GLCDCMD_COMMAND);
-  this->_serial.write(GLCDCMD_LINE);
-  this->_serial.write(x1);
-  this->_serial.write(y1);
-  this->_serial.write(x2);
-  this->_serial.write(y2);
+  Serial.write(GLCDCMD_COMMAND);
+  Serial.write(GLCDCMD_LINE);
+  Serial.write(this->_originX + x1);
+  Serial.write(this->_originY + y1);
+  Serial.write(this->_originX + x2);
+  Serial.write(this->_originY + y2);
   if (state) {
-    this->_serial.write(GLCDCMD_PX_ON);
+    Serial.write(GLCDCMD_PX_ON);
   } else {
-    this->_serial.write(GLCDCMD_PX_OFF);
+    Serial.write(GLCDCMD_PX_OFF);
   }
+  this->flush();
 }
 
-void SerialGLCD::drawBox(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, bool state) {
-  this->_serial.write(GLCDCMD_COMMAND);
-  this->_serial.write(GLCDCMD_BOX);
-  this->_serial.write(x1);
-  this->_serial.write(x1);
-  this->_serial.write(y2);
-  this->_serial.write(y2);
-  if (state) {
-    this->_serial.write(GLCDCMD_PX_ON);
-  } else {
-    this->_serial.write(GLCDCMD_PX_OFF);
-  }
+void SerialGLCD::drawBox(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2) {
+  Serial.write(GLCDCMD_COMMAND);
+  Serial.write(GLCDCMD_BOX);
+  Serial.write(this->_originX + x1);
+  Serial.write(this->_originY + y1);
+  Serial.write(this->_originX + x2);
+  Serial.write(this->_originY + y2);
+  this->flush();
 }
 
 void SerialGLCD::drawCircle(uint8_t x, uint8_t y, uint8_t radius, bool state) {
-  this->_serial.write(GLCDCMD_COMMAND);
-  this->_serial.write(GLCDCMD_CIRCLE);
-  this->_serial.write(x);
-  this->_serial.write(y);
-  this->_serial.write(radius);
+  Serial.write(GLCDCMD_COMMAND);
+  Serial.write(GLCDCMD_CIRCLE);
+  Serial.write(this->_originX + x);
+  Serial.write(this->_originY + y);
+  Serial.write(radius);
   if (state) {
-    this->_serial.write(GLCDCMD_PX_ON);
+    Serial.write(GLCDCMD_PX_ON);
   } else {
-    this->_serial.write(GLCDCMD_PX_OFF);
+    Serial.write(GLCDCMD_PX_OFF);
   }
+  this->flush();
 }
 
 void SerialGLCD::eraseBlock(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2) {
-  this->_serial.write(GLCDCMD_COMMAND);
-  this->_serial.write(GLCDCMD_ERASE);
-  this->_serial.write(x1);
-  this->_serial.write(x1);
-  this->_serial.write(y2);
-  this->_serial.write(y2);
+  Serial.write(GLCDCMD_COMMAND);
+  Serial.write(GLCDCMD_ERASE);
+  Serial.write(this->_originX + x1);
+  Serial.write(this->_originY + y1);
+  Serial.write(this->_originX + x2);
+  Serial.write(this->_originY + y2);
+  this->flush();
+}
+
+void SerialGLCD::flush() {
+  uint32_t now = millis();
+  uint32_t next = this->_lastCmd + 200;
+  if (now < next) {
+    delay(next - now);
+  }
+  this->_lastCmd = millis();
 }

@@ -23,7 +23,7 @@ http://github.com/Cylindric/ArdLib-SerialGLCD.
 #define SerialGLCD_h
 
 #include <inttypes.h>
-#include <SoftwareSerial.h>
+//#include <SoftwareSerial.h>
 
 class SerialGLCD
 {
@@ -31,7 +31,10 @@ class SerialGLCD
     uint8_t _txPin;
     uint8_t _width;
     uint8_t _height;
-    SoftwareSerial _serial;
+    uint8_t _originX;
+    uint8_t _originY;
+    uint32_t _lastCmd;
+    void flush();
 
   public:
     SerialGLCD(uint8_t transmitPin, uint8_t width, uint8_t height);
@@ -45,11 +48,12 @@ class SerialGLCD
     void toggleSplashScreen();
     void setDutyCycle(uint8_t percent);
     void setBaudRate(uint8_t ratecode);
+    void setOrigin(uint8_t x, uint8_t y);
     
     void drawAscii(char* text);
     void drawPixel(uint8_t x, uint8_t y, bool state = true);
     void drawLine(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, bool state = true);
-    void drawBox(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, bool state = true);
+    void drawBox(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2);
     void drawCircle(uint8_t x, uint8_t y, uint8_t radius, bool state = true);
     void eraseBlock(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2);
     
