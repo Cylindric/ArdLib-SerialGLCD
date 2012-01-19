@@ -33,22 +33,18 @@ static const uint8_t GLCDCMD_COMMAND = 0x7C;
 static const uint8_t GLCDCMD_DEMO = 0x04;
 static const uint8_t GLCDCMD_DUTYCYCLE = 0x02;
 static const uint8_t GLCDCMD_ERASE = 0x05;
+static const uint8_t GLCDCMD_FILLED_BOX = 0x12;
 static const uint8_t GLCDCMD_LINE = 0x0C;
 static const uint8_t GLCDCMD_PIXEL = 0x10;
 static const uint8_t GLCDCMD_PX_OFF = 0x00;
 static const uint8_t GLCDCMD_PX_ON = 0x01;
+static const uint8_t GLCDCMD_RESET = 0x06;
 static const uint8_t GLCDCMD_REVERSE = 0x12;
+static const uint8_t GLCDCMD_SET_FONT_MODE = 0x0A;
 static const uint8_t GLCDCMD_SETX = 0x18;
 static const uint8_t GLCDCMD_SETY = 0x19;
 static const uint8_t GLCDCMD_SPLASH = 0x13;
-
-// Small-font
-static const uint8_t SMALLFONT_OFFSETS[] = {24, 16};
-static const uint8_t SMALLFONT[] = {
-  0,1, 0,2, 0,3, 0,4, 1,0, 1,5, 2,0, 2,5, 3,1, 3,2, 3,3, 3,4, // 0
-  0,0, 0,4, 1,0, 0,2, 0,3, 0,4, 0,5, 1,0, // 1
-};
-
+static const uint8_t GLCDCMD_TOGGLE_FONT = 0x08;
 
 SerialGLCD::SerialGLCD(uint8_t transmitPin, uint8_t width, uint8_t height) : _serial(SoftwareSerial(0, transmitPin)) {
   this->_txPin = transmitPin;
@@ -68,9 +64,9 @@ void SerialGLCD::clear() {
   this->flush();
 }
 
-void SerialGLCD::demo() {
+void SerialGLCD::reset() {
   this->_serial.write(GLCDCMD_COMMAND);
-  this->_serial.write(GLCDCMD_DEMO);
+  this->_serial.write(GLCDCMD_RESET);
   this->flush();
 }
 
@@ -93,10 +89,46 @@ void SerialGLCD::setDutyCycle(uint8_t percent) {
   this->flush();
 }
 
-void SerialGLCD::setBaudRate(uint8_t ratecode) {
+void SerialGLCD::setBaudRate(uint16_t rate) {
   this->_serial.write(GLCDCMD_COMMAND);
   this->_serial.write(GLCDCMD_BAUD);
-  this->_serial.write(0x30 + ratecode);
+  switch (rate) {
+    case 4800:
+      this->_serial.write(0x01);
+      break;
+    
+    case 9600:
+      this->_serial.write(0x02);
+      break;
+    
+    case 19200:
+      this->_serial.write(0x03);
+      break;
+    
+    case 38400:
+      this->_serial.write(0x04);
+      break;
+    
+    case 57600:
+      this->_serial.write(0x05);
+      break;
+    
+    else:
+      this->_serial.write(0x06);
+      break;
+  }
+  this->flush();
+}
+
+void SerialGLCD::toggleFont() {
+  this->_serial.write(GLCDCMD_COMMAND);
+  this->_serial.write(GLCDCMD_TOGGLE_FONT);
+  this->flush();
+}
+
+void SerialGLCD::setFontMode(uint8_t mode) {
+  this->_serial.write(GLCDCMD_COMMAND);
+  this->_serial.write(GLCDCMD_SET_FONT_MODE);
   this->flush();
 }
 
@@ -164,6 +196,17 @@ void SerialGLCD::drawBox(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, bool st
   this->_serial.write(this->_originX + x2);
   this->_serial.write(this->_originY + y2);
   this->_serial.write(state ? GLCDCMD_PX_ON : GLCDCMD_PX_OFF);
+  this->flush();
+}
+
+void SerialGLCD::drawFilledBox(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t fillbyte) {
+  this->_serial.write(GLCDCMD_COMMAND);
+  this->_serial.write(GLCDCMD_FILLED_BOX);
+  this->_serial.write(this->_originX + x1);
+  this->_serial.write(this->_originY + y1);
+  this->_serial.write(this->_originX + x2);
+  this->_serial.write(this->_originY + y2);
+  this->_serial.write(fillbyte);
   this->flush();
 }
 
