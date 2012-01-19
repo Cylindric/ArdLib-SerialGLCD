@@ -4,9 +4,7 @@
 
 // Create a new SerialGLCD object, and specify:
 //   the transmit pin it is connected to (must be a PWM-capable pin)
-//   the width of the screen in pixels
-//   the height of the screen in pixels
-SerialGLCD glcd(3, 128, 64);
+SerialGLCD glcd(3);
 
 // Example setup
 void setup() {
@@ -19,10 +17,12 @@ void setup() {
 // Example loop
 void loop() {
   
-  // clear the screen
+  // Clear the screen
   glcd.clear();
+  
+  // Set the desired origin point for measurements
+  // (0,0) is the top-left corner.
   glcd.setOrigin(0, 0);
-
 
   // LINES
   // Draw a bunch of lines
@@ -43,18 +43,11 @@ void loop() {
   // Move the origin to the centre
   glcd.setOrigin(64, 32);
   
-  // draw some little box in the middle of the screen
-  glcd.drawBox(-5, -5, 5, 5);
-  delay(500);
-  glcd.drawBox(-10, -10, 10, 10);
-  delay(500);
-  glcd.drawBox(-15, -15, 15, 15);
-  delay(500);
-  glcd.drawBox(-20, -20, 20, 20);
-  delay(500);
-  glcd.drawBox(-25, -25, 25, 25);
-  delay(2000);
-
+  // draw some little boxes in the middle of the screen
+  for (int i = 0; i < 5; i++) {
+    glcd.drawRectangle(-(i*5), -(i*5), (i*5), (i*5));
+    delay(500);
+  }
   
   // put some plain text
 //  glcd.drawAscii("Hello!");
