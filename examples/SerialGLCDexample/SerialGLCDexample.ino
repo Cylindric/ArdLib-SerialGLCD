@@ -1,6 +1,6 @@
 // SerialGLCD requires SoftwareSerial to work, so make sure that's included too
 #include <SerialGLCD.h>
-//#include <SoftwareSerial.h>
+#include <SoftwareSerial.h>
 
 // Create a new SerialGLCD object, and specify:
 //   the transmit pin it is connected to (must be a PWM-capable pin)
