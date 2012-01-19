@@ -52,7 +52,7 @@ SerialGLCD::SerialGLCD(uint8_t transmitPin) : _serial(SoftwareSerial(0, transmit
 
 void SerialGLCD::begin() {
   this->_serial.begin(115200);
-  this->clear();
+  this->reset();
   this->flush();
 }
 
@@ -66,6 +66,7 @@ void SerialGLCD::reset() {
   this->_serial.write(GLCDCMD_COMMAND);
   this->_serial.write(GLCDCMD_RESET);
   this->flush();
+  this->_alternateFont = false;
 }
 
 void SerialGLCD::toggleReverse() {
@@ -121,6 +122,7 @@ void SerialGLCD::setBaudRate(uint16_t rate) {
 void SerialGLCD::toggleFont() {
   this->_serial.write(GLCDCMD_COMMAND);
   this->_serial.write(GLCDCMD_TOGGLE_FONT);
+  this->_alternateFont = !this->_alternateFont;
   this->flush();
 }
 
@@ -157,12 +159,24 @@ void SerialGLCD::setOrigin(uint8_t x, uint8_t y) {
 }
 
 void SerialGLCD::drawAscii(char* text) {
-  this->_serial.print(text);
+  this->_serial.write(text);
   this->flush();
 }
 
-void SerialGLCD::drawAscii(int number) {
-  this->_serial.print(number);
+void SerialGLCD::drawAscii(uint8_t x, uint8_t y, char* text) {
+  this->gotoXY(x, y);
+  this->drawAscii(text);
+  this->flush();
+}
+
+void SerialGLCD::drawAscii(float number, int decimals) {
+  this->_serial.print(number, decimals);
+  this->flush();
+}
+
+void SerialGLCD::drawAscii(uint8_t x, uint8_t y, float number, int decimals) {
+  this->gotoXY(x, y);
+  this->_serial.print(number, decimals);
   this->flush();
 }
 
@@ -230,7 +244,7 @@ void SerialGLCD::eraseBlock(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2) {
 
 void SerialGLCD::flush() {
   uint32_t now = millis();
-  uint32_t next = this->_lastCmd + 100;
+  uint32_t next = this->_lastCmd + 50;
   if (now < next) {
     delay(next - now);
   }

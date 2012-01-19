@@ -28,6 +28,7 @@ http://github.com/Cylindric/ArdLib-SerialGLCD.
 class SerialGLCD
 {
   private:
+    bool _alternateFont;
     uint8_t _txPin;
     uint8_t _originX;
     uint8_t _originY;
@@ -60,7 +61,9 @@ class SerialGLCD
     void setFontMode(uint8_t mode = FONTMODE_COPY);
     
     void drawAscii(char* text);
-    void drawAscii(int number);
+    void drawAscii(uint8_t x, uint8_t y, char* text);
+    void drawAscii(float number, int decimals = 0);
+    void drawAscii(uint8_t x, uint8_t y, float number, int decimals = 0);
     void drawRectangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, bool state = true);
     void drawCircle(uint8_t x, uint8_t y, uint8_t radius, bool state = true);
     void drawFilledRectangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t fillbyte = 0xFF);
