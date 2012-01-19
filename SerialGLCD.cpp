@@ -46,10 +46,8 @@ static const uint8_t GLCDCMD_SETY = 0x19;
 static const uint8_t GLCDCMD_SPLASH = 0x13;
 static const uint8_t GLCDCMD_TOGGLE_FONT = 0x08;
 
-SerialGLCD::SerialGLCD(uint8_t transmitPin, uint8_t width, uint8_t height) : _serial(SoftwareSerial(0, transmitPin)) {
+SerialGLCD::SerialGLCD(uint8_t transmitPin) : _serial(SoftwareSerial(0, transmitPin)) {
   this->_txPin = transmitPin;
-  this->_width = width;
-  this->_height = height;
 }
 
 void SerialGLCD::begin() {
@@ -113,7 +111,7 @@ void SerialGLCD::setBaudRate(uint16_t rate) {
       this->_serial.write(0x05);
       break;
     
-    else:
+    default:
       this->_serial.write(0x06);
       break;
   }
@@ -188,7 +186,7 @@ void SerialGLCD::drawLine(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, bool s
   this->flush();
 }
 
-void SerialGLCD::drawBox(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, bool state) {
+void SerialGLCD::drawRectangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, bool state) {
   this->_serial.write(GLCDCMD_COMMAND);
   this->_serial.write(GLCDCMD_BOX);
   this->_serial.write(this->_originX + x1);
@@ -199,7 +197,7 @@ void SerialGLCD::drawBox(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, bool st
   this->flush();
 }
 
-void SerialGLCD::drawFilledBox(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t fillbyte) {
+void SerialGLCD::drawFilledRectangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t fillbyte) {
   this->_serial.write(GLCDCMD_COMMAND);
   this->_serial.write(GLCDCMD_FILLED_BOX);
   this->_serial.write(this->_originX + x1);

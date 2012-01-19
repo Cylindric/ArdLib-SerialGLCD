@@ -61,9 +61,9 @@ class SerialGLCD
     
     void drawAscii(char* text);
     void drawAscii(int number);
-    void drawBox(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, bool state = true);
+    void drawRectangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, bool state = true);
     void drawCircle(uint8_t x, uint8_t y, uint8_t radius, bool state = true);
-    void drawFilledBox(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t fillbyte = 0xFF);
+    void drawFilledRectangle(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t fillbyte = 0xFF);
     void drawLine(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, bool state = true);
     void drawPixel(uint8_t x, uint8_t y, bool state = true);
     void eraseBlock(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2);

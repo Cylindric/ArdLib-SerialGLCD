@@ -13,8 +13,10 @@ SerialGLCD	KEYWORD1
 begin	KEYWORD2
 clear	KEYWORD2
 demo	KEYWORD2
+reset	KEYWORD2
 drawAscii	KEYWORD2
-drawBox	KEYWORD2
+drawRectangle	KEYWORD2
+drawFilledRectangle	KEYWORD2
 drawCircle	KEYWORD2
 drawLine	KEYWORD2
 drawPixel	KEYWORD2
@@ -24,9 +26,18 @@ gotoXY	KEYWORD2
 gotoY	KEYWORD2
 setBaudRate	KEYWORD2
 setDutyCycle	KEYWORD2
+toggleFont	KEYWORD2
+setFontMode	KEYWORD2
 toggleReverse	KEYWORD2
 toggleSplashScreen	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
 #######################################
+FONTMODE_AND	LITERAL1
+FONTMODE_NAND	LITERAL1
+FONTMODE_OR	LITERAL1
+FONTMODE_NOR	LITERAL1 
+FONTMODE_XOR	LITERAL1
+FONTMODE_NXOR	LITERAL1
+FONTMODE_COPY	LITERAL1
