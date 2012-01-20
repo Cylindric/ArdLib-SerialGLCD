@@ -45,7 +45,7 @@ class SerialGLCD
     static const uint8_t FONTMODE_NXOR = 0x06; 
     static const uint8_t FONTMODE_COPY = 0x07; 
   
-    SerialGLCD(uint8_t transmitPin);
+    SerialGLCD(uint8_t receivePin, uint8_t transmitPin);
     void begin();
     void clear();
     void reset();

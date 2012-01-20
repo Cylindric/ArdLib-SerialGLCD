@@ -46,8 +46,9 @@ static const uint8_t GLCDCMD_SETY = 0x19;
 static const uint8_t GLCDCMD_SPLASH = 0x13;
 static const uint8_t GLCDCMD_TOGGLE_FONT = 0x08;
 
-SerialGLCD::SerialGLCD(uint8_t transmitPin) : _serial(SoftwareSerial(0, transmitPin)) {
+SerialGLCD::SerialGLCD(uint8_t receivePin, uint8_t transmitPin) : _serial(SoftwareSerial(receivePin, transmitPin)) {
   this->_txPin = transmitPin;
+  this->_rxPin = receivePin;
 }
 
 void SerialGLCD::begin() {
