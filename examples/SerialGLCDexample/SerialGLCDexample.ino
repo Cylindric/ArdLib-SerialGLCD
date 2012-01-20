@@ -4,7 +4,7 @@
 
 // Create a new SerialGLCD object, and specify:
 //   the transmit pin it is connected to (must be a PWM-capable pin)
-SerialGLCD glcd(3);
+SerialGLCD glcd(3, 2);
 
 // Example setup
 void setup() {
