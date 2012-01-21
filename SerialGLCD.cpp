@@ -245,7 +245,7 @@ void SerialGLCD::eraseBlock(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2) {
 
 void SerialGLCD::flush() {
   uint32_t now = millis();
-  uint32_t next = this->_lastCmd + 50;
+  uint32_t next = this->_lastCmd + 20;
   if (now < next) {
     delay(next - now);
   }

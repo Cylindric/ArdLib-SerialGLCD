@@ -30,6 +30,7 @@ class SerialGLCD
   private:
     bool _alternateFont;
     uint8_t _txPin;
+    uint8_t _rxPin;
     uint8_t _originX;
     uint8_t _originY;
     uint32_t _lastCmd;
