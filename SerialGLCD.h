@@ -71,6 +71,7 @@ class SerialGLCD
     void drawLine(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, bool state = true);
     void drawPixel(uint8_t x, uint8_t y, bool state = true);
     void eraseBlock(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2);
+    void bitblt(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t mode, uint8_t* data);
     
 };
 

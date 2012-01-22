@@ -26,6 +26,7 @@ http://github.com/Cylindric/ArdLib-SerialGLCD.
 // Command-codes for the SparkFun SerialGLCD Backpack
 // http://www.sparkfun.com/products/9352
 static const uint8_t GLCDCMD_BAUD = 0x07;
+static const uint8_t GLCDCMD_BITBLT = 0x16;
 static const uint8_t GLCDCMD_BOX = 0x0F;
 static const uint8_t GLCDCMD_CIRCLE = 0x03;
 static const uint8_t GLCDCMD_CLEAR = 0x00;
@@ -241,6 +242,12 @@ void SerialGLCD::eraseBlock(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2) {
   this->_serial.write(this->_originX + x2);
   this->_serial.write(this->_originY + y2);
   this->flush();
+}
+
+void SerialGLCD::bitblt(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t mode, uint8_t* data) {
+//   this->_serial.write(GLCDCMD_COMMAND);
+//   this->_serial.write(GLCDCMD_BITBLT);
+//   this->flush();
 }
 
 void SerialGLCD::flush() {
