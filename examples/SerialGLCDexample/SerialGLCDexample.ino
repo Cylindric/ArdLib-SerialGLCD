@@ -4,13 +4,14 @@
 
 // Create a new SerialGLCD object, and specify:
 //   the transmit pin it is connected to (must be a PWM-capable pin)
-SerialGLCD glcd(3, 2);
+SerialGLCD glcd(2, 3);
 
 // Example setup
 void setup() {
 
   // initialise the Serial connection and clear the screen
   glcd.begin();
+  delay(200);
   glcd.setDutyCycle(50);
 }
 
@@ -19,6 +20,7 @@ void loop() {
   
   // Clear the screen
   glcd.clear();
+  delay(200);
   
   // Set the desired origin point for measurements
   // (0,0) is the top-left corner.
@@ -26,8 +28,33 @@ void loop() {
 
   // LINES
   // Draw a bunch of lines
-  for (int i = 0; i<=5; i++) {
-    glcd.drawLine(0, 38+(i*5), 0+(i*5), 63);
+  int x1 = 0;
+  int y1 = 32;
+  int x2 = 64;
+  int y2 = 32;
+  for (int i = 0; i <= 7; i++) {
+    glcd.drawLine(x1, y1, x2, y2);
+    delay(50);
+    x1+=8;
+    y2-=4;
+  }
+  for (int i = 0; i <= 7; i++) {
+    glcd.drawLine(x1, y1, x2, y2);
+    delay(50);
+    x1+=8;
+    y2+=4;
+  }
+  for (int i = 0; i <= 7; i++) {
+    glcd.drawLine(x1, y1, x2, y2);
+    delay(50);
+    x1-=8;
+    y2+=4;
+  }
+  for (int i = 0; i <= 7; i++) {
+    glcd.drawLine(x1, y1, x2, y2);
+    delay(50);
+    x1-=8;
+    y2-=4;
   }
 
   // CIRCLES 
@@ -41,7 +68,7 @@ void loop() {
   }
 
   // Move the origin to the centre
-  glcd.setOrigin(64, 32);
+  glcd.setOrigin(96, 48);
   
   // draw some little boxes in the middle of the screen
   for (int i = 0; i < 5; i++) {
