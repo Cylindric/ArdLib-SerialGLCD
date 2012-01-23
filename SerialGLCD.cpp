@@ -252,7 +252,7 @@ void SerialGLCD::bitblt(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t mode
 
 void SerialGLCD::flush() {
   uint32_t now = millis();
-  uint32_t next = this->_lastCmd + 20;
+  uint32_t next = this->_lastCmd + 50;
   if (now < next) {
     delay(next - now);
   }
